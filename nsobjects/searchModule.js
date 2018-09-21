@@ -104,6 +104,7 @@ function ResultSet() {
   };
 }
 
+
 /**
  * NetSuite - constructor of search module.
  * @param {*} options_
@@ -145,10 +146,13 @@ module.exports = {
   createColumn: options => createColumn(options),
   lookupFields: (options) => {
     const result = {};
-    options.columns.map((item, index) => {
-      result[item] = [{ value: index, text: item }];
-      return true;
-    });
+    if (Array.isArray(options.columns)) {
+      options.columns.forEach((item, index) => {
+        result[item] = [{ value: index, text: item }];
+      });
+    } else if (typeof options.column === 'string') {
+      result[options.column] = [{ value: Math.floor(Math.random() * 10000), text: options.column }];
+    }
     return result;
   },
   Type: {
